@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9,10,11,edge,chrome=1">
+	<title>工时任务管理系统</title>
+	<!--框架样式-->
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">	
+	<!--框架样式-->
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<!--自定义样式，全局样式文件-->
+	<link rel="stylesheet" type="text/css" href="../static/css/demo.css">
+	<!--第三方插件，字体图标-->
+	<link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
+	<!--jquery-->
+	<script type="text/javascript" src="../jquery.min.js"></script>
+	<!--框架脚本-->
+	<script type="text/javascript" src="../jquery.easyui.min.js"></script>
+</head>
+<body class="easyui-layout" id="main">
+	<!--BEGIN HEAD PANEL-->
+	<div data-options="region:'north',border:false" style="background:#007cb6;padding:0px 5px;overflow-y: hidden;">
+		<div id="pf-hd">
+			<!--BEGIN LOGO-->
+			<div class="pf-logo">
+				<img src="../static/images/main/login.png" alt="logo" style="height:37px">
+			</div>		
+			<!--END LOGO-->
+
+			<!--BEGIN HEAD MENU-->
+			<div class="pf-nav-wrap">
+              <!--BEGIN pf-nav-ww-->
+              <div class="pf-nav-ww">               
+                <ul class="pf-nav">	
+					<!--
+					<li class="pf-nav-item project" data-sort="0" data-menu="system_menu_1">
+						<a href="javascript:;">
+							<i class="fa fa-tasks"></i>
+							<span class="pf-nav-title">任务管理</span>
+						</a>
+					</li>
+					<li class="pf-nav-item project current" data-sort="1" data-menu="system_menu_2">
+						<a href="javascript:;">
+							<i class="fa fa-camera-retro"></i>
+							<span class="pf-nav-title">系统管理</span>
+						</a>
+					</li>
+					-->
+				</ul>
+              </div>
+              <!--END pf-nav-ww-->
+            </div>
+			<!--END HEAD MENU-->
+			
+			<!--BEGIN pf-user-->
+			<div class="pf-user">
+            	<!--<span class="msgts">10</span>-->
+                <div class="pf-user-photo">
+                    <img src="../static/images/main/user.png" alt="">                   
+                </div>
+                <h4 class="pf-user-name ellipsis">史硕俊</h4>
+                <i class="fa fa-angle-down" 
+					style="font-size: 16px;font-style: normal;-webkit-font-smoothing: antialiased;-webkit-text-stroke-width: 0.2px;-moz-osx-font-smoothing: grayscale;color:white"></i>
+				<!--BEGIN pf-user-panel-->
+                <div class="pf-user-panel">
+                    <ul class="pf-user-opt">
+                        <li>
+                            <a href="javascript:;">
+                                <i class="fa fa-user-o"></i>
+                                <span class="pf-opt-name">用户信息</span>
+                            </a>
+                        </li>
+                        <li class="pf-modify-pwd">
+                            <a href="#">
+                                <i class="fa fa-key"></i>
+                                <span class="pf-opt-name">修改密码</span>
+                            </a>
+                        </li>
+                        <li class="pf-logout">
+                            <a href="javascript:;">
+                                 <i class="fa fa-sign-out"></i>
+                                <span class="pf-opt-name">退出</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+				<!--END pf-user-panel-->
+            </div>
+			<!--END pf-user-->
+
+		</div>
+	</div>
+	<!--END HEAD PANEL-->
+
+	<!--BEGIN LEFT MENU-->
+	<div data-options="region:'west',split:true,title:''" style="width:150px;" class="leftMenu">
+		<!--BEGIN easyui-accordion-->
+		<div class="easyui-accordion" data-options="fit:true,border:false,split:true"> 
+			<!--
+			<div title="Title1" style="padding:10px;" data-options="selected:true">
+				<ul class="sider-nav-s">					
+					<li class="active" text="首页" data-href="workbench.html">					
+						<a href="#"><i class="fa fa-list-alt"> </i> 首页</a>
+					</li>					
+					<li class="" text="详细信息" data-href="providers1.html">
+						<a href="#">
+							<i class="fa fa-list-alt"> </i> 详细信息
+						</a>
+					</li>
+					<li class="" text="企业基本信息" data-href="basic_info.html">
+						<a href="#">
+							<i class="fa fa-list-alt"> </i> 企业基本信息
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div title="Title2" data-options="" style="padding:10px;">
+				content2
+			</div>
+			<div title="Title3" style="padding:10px">
+				content3
+			</div>
+			-->
+		</div>
+		<!--END easyui-accordion-->
+	</div>
+	<!--END LEFT MENU-->
+	<!--
+	<div data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>
+	-->
+	<!--BEGIN CENTER-->
+	<div data-options="region:'center'" style="border:0px">
+		<!--BEGIN TABS-->
+		<div id="MainTabs" class="easyui-tabs tabs-container easyui-fluid" style="width:100%;height:100%;border:0px">
+			<!--BEGIN TAB PANEL-->
+			<div title="首页" style="padding:0px;" >
+				<iframe class="page-iframe" style="overflow-y:hidden;" src="home.html" frameborder="no"   border="no" height="100%" width="100%" scrolling="auto"></iframe>
+			</div>
+			<!--END TAB PANEL-->
+		</div>
+		<!--END TABS-->
+	</div>
+	<!--END CENTER-->
+	<!--主界面 js-->
+	<script type="text/javascript" src="../static/js/main.js"></script>	
+</body>
+</html>

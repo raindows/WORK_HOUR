@@ -1,0 +1,286 @@
+body {
+    font-family:verdana,helvetica,arial,sans-serif;
+    padding:20px;
+    font-size:12px;
+    margin:0;
+}
+h2 {
+    font-size:18px;
+    font-weight:bold;
+    margin:0;
+    margin-bottom:15px;
+}
+.demo-info{
+	padding:0 0 12px 0;
+}
+.demo-tip{
+	display:none;
+}
+.label-top{
+    display: block;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+}
+/***********************Head  logo************/
+#pf-hd {
+    position: relative;
+    z-index: 2;
+    background-color: #007cb6;
+    background: url(../images/main/xg_left.png?1479561596) left center no-repeat,url(../images/main/xg_right.png?1479561596) right center no-repeat,url(../images/main/top_bottombg.png?1479561596) left bottom repeat-x;
+}
+#pf-hd .pf-logo {
+    float: left;
+    padding: 0 10px;
+    height: 100%;
+    width: 150px;
+    border-right: 1px solid #016796;
+    line-height: 50px;
+}
+#pf-hd .pf-logo img {
+    vertical-align: middle;
+    margin-left: -10px;
+}
+/***********************Head  menu************/
+#pf-hd .pf-nav-wrap {
+    position: relative;
+    float: left;
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;   
+}
+#pf-hd .pf-nav-wrap .pf-nav-ww {
+    float: left;
+    height: 50px;
+    /*width: 625px;*/
+    overflow: hidden;
+}
+#pf-hd .pf-nav {
+    float: left;
+}
+ol, ul {
+    list-style: none;
+}
+#pf-hd .pf-nav .pf-nav-item.current {
+    background: url(../images/main/navbg.png?1479561596);
+}
+#pf-hd .pf-nav .pf-nav-item {
+    float: left;
+    height: 50px;
+    color: #fff;
+    padding: 6px 15px;
+    border-right: 1px solid #016796;
+}
+#pf-hd .pf-nav .pf-nav-item.current a {
+    color: #fff;
+}
+#pf-hd .pf-nav .pf-nav-item a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+}
+#pf-hd .pf-nav .pf-nav-item i{
+    display: block;
+   /* margin-top: 12px;*/
+    font-size: 20px;
+    text-align: center;
+}
+.pf-nav-title{
+font-size: 14px;
+}
+/***********************Head  user************/
+#pf-hd .pf-user {
+    margin-right: 0;
+}
+#pf-hd .pf-user {
+    position: relative;
+    float: right;
+    padding: 0 10px;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+}
+.msgts {
+    position: absolute;
+    background: url(../static/images/main/xxts.png) no-repeat;
+    color: #fff;
+    font-size: 10px;
+    width: 23px;
+    height: 17px;
+    line-height: 17px;
+    text-align: center;
+    z-index: 100;
+    right: 88px;
+    top: 15px;
+}
+#pf-hd .pf-user .pf-user-photo {
+    float: left;
+    /*margin: 12px 10px 0 0;*/
+    width: 50px;
+    height: 40px;
+	padding: 5px 0px;
+}
+#pf-hd .pf-user .pf-user-photo img {
+    margin: auto;
+}
+#pf-hd .pf-user .pf-user-name {
+    float: left;
+    max-width: 150px;
+    color: #fff;
+    font-size: 14px;
+    margin-right: 5px;
+}
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#pf-hd .pf-user .xiala {
+    color: #fff;
+    position: relative;
+    top: -2px;
+}
+#pf-hd .pf-user:hover {
+    background: url(../images/main/top_userbg.png);
+}
+#pf-hd .pf-user:hover .pf-user-panel {
+    display: block;
+}
+#pf-hd .pf-user .pf-user-panel {
+    display: none;
+    position: fixed;
+   /* left: 0;*/
+    width:100%;
+    right: 5px;
+    top: 50px;
+    background: #fff;
+    z-index: 111;
+    border: 1px solid #e1e1e1;
+    box-shadow: 1px 1px 2px #ddd;
+}
+ol, ul {
+    list-style: none;
+}
+#pf-hd .pf-user .pf-user-panel li {
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    padding: 0 15px;
+}
+#pf-hd .pf-user .pf-user-panel li a {
+    color: #000;
+    text-decoration: none;
+}
+#pf-hd .pf-user .pf-user-panel li .iconfont {
+    margin-right: 10px;
+    color: #000;
+}
+.mailtext {
+    color: #F00;
+}
+
+.sider-nav-s li a{
+color:rgb(0, 0, 0);
+font-size: 13px;
+line-height:20px;
+text-decoration: none;
+}
+
+.sider-nav-s li.active a {
+    font-weight: bold;
+    color: rgb(0, 124, 182);
+}
+#main .easyui-tabs .panel-body {
+    overflow: hidden;
+}
+
+.row{
+     display: block;
+	 clear:both;
+}
+.col-1{
+	width:calc(1/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-2{
+	width:calc(2/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-3{
+	width:calc(3/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+	
+}
+/***********�趨Ԫ�صĸ߶ȺͿ�Ȱ�Padding**************/
+*{
+ -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.col-4{
+	width:calc(4/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-5{
+	width:calc(5/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-6{
+	width:calc(6/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-7{
+	width:calc(7/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-8{
+	width:calc(8/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-9{
+	width:calc(9/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-10{
+	width:calc(10/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-11{
+	width:calc(11/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+.col-12{
+	width:calc(12/12*100%);
+	padding: 5px 5px;
+	margin:0px;
+	float:left;
+}
+ul.sider-nav-s li{
+	padding: 0px 5px;
+}

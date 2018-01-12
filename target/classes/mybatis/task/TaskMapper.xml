@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TaskMapper">
+	
+	<!-- 项目基础信息表 -->
+	<sql id="tableName">PROJECT_TASK</sql>
+	
+	<!--加载我下达的任务 -->
+	<select id="loadMyCreateTask" parameterType="pd" resultType="pd">
+		select top 5000 * from 
+		<include refid="tableName"></include>  with(nolock)
+		where TASK_CREATE_PERSON =#{TASK_CREATE_PERSON} order by PTID DESC
+	</select>
+	<!-- 加载给我的任务且未完成的 -->
+	<select id="loadMyTask" parameterType="pd" resultType="pd">
+		select top 5000 * from 
+		<include refid="tableName"></include>  with(nolock)
+		where REAL_COMPLETE_TIME is null and PERSON_LIABLE=#{[PERSON_LIABLE]}
+	</select>	
+	<!--已完成且需要我关闭的任务-->
+	<select id="loadCompleteAndNeedMyCloseTask" parameterType="pd" resultType="pd">
+		select top 5000 * from  <include refid="tableName"></include>  with(nolock)
+		where  TASK_STATE='已完成' and TASK_CREATE_PERSON=#{TASK_CREATE_PERSON} 
+	</select>
+	<!-- 我的当月已关闭任务 -->
+	<select id="myCurrentMothCloseTask" parameterType="pd" resultType="pd">
+		select   * from  <include refid="tableName"></include>  with(nolock)
+		where  TASK_STATE='已关闭' and PERSON_LIABLE=#{PERSON_LIABLE} 
+		and TASK_CLOSE_TIME between #{START_TIME} AND #{END_TIME}
+	</select>
+	<!-- 当月任务完成率 -->
+	<select id="myCurrentMothComplete" parameterType="pd" resultType="pd">
+		select   TASK_STATE,sum(ESTIMATED_WORK_HOUR) as WORK_HOUR from  <include refid="tableName"></include>  with(nolock)
+		where  PERSON_LIABLE=#{PERSON_LIABLE} 
+		and (NEED_COMPLETE_TIME between #{START_TIME} AND #{END_TIME}
+		or TASK_CLOSE_TIME between #{START_TIME} AND #{END_TIME})
+		group by [TASK_STATE]
+	</select>
+	<!-- 当年每月工时统计 -->
+	<select id="myCurrentYearMothWorkHour" parameterType="pd" resultType="pd">
+		select   Datename(month,TASK_CLOSE_TIME) as MONTH_,sum(ESTIMATED_WORK_HOUR) as WORK_HOUR from  <include refid="tableName"></include>
+		 with(nolock)
+		where  PERSON_LIABLE=#{PERSON_LIABLE}  and Datename(year,TASK_CLOSE_TIME)=Datename(year,GetDate())
+		and TASK_STATE='已关闭'
+		group by Datename(month,TASK_CLOSE_TIME)
+	</select>
+	<!-- 月工时统计 -->
+	<select id="monthHour" parameterType="pd" resultType="pd">
+		select   PERSON_LIABLE,sum(ESTIMATED_WORK_HOUR) as WORK_HOUR 
+		from  <include refid="tableName"></include>	 with(nolock)
+		where  TASK_STATE='已关闭' and TASK_CLOSE_TIME between #{START_TIME} and #{END_TIME} 
+		group by PERSON_LIABLE
+	</select>
+	<!-- 月工时统计明细 -->
+	<select id="monthHourDetail" parameterType="pd" resultType="pd">
+		select  *
+		from  <include refid="tableName"></include>	 with(nolock)
+		where TASK_STATE='已关闭' and TASK_CLOSE_TIME between #{START_TIME} and #{END_TIME} and PERSON_LIABLE =#{PERSON_LIABLE}
+	</select>
+	
+	<!-- 添加任务信息 -->
+	<insert id="addTask" parameterType="pd" keyProperty="PTID" useGeneratedKeys="true">
+		insert into 
+		<include refid="tableName"></include>
+		(PROJECT_NAME,TASK_CREATE_TIME,ESTIMATED_WORK_HOUR,NEED_COMPLETE_TIME,TASK_TYPE,PERSON_LIABLE,PRIORITY,TASK_CONTENT,TASK_CREATE_PERSON) 
+		values(#{PROJECT_NAME},getdate(),#{ESTIMATED_WORK_HOUR},#{NEED_COMPLETE_TIME},#{TASK_TYPE},#{PERSON_LIABLE},#{PRIORITY},#{TASK_CONTENT},#{TASK_CREATE_PERSON})
+	</insert>
+	<!-- 更新我下达的 -->
+	<update id="updateTask" parameterType="pd">
+		update <include refid="tableName"></include> with(ROWLOCK)
+		set PROJECT_NAME= #{PROJECT_NAME},
+		ESTIMATED_WORK_HOUR= #{ESTIMATED_WORK_HOUR},
+		NEED_COMPLETE_TIME= #{NEED_COMPLETE_TIME},
+		TASK_TYPE= #{TASK_TYPE},
+		PRIORITY= #{PRIORITY},
+		TASK_CREATE_TIME=getdate(),
+		PERSON_LIABLE=#{PERSON_LIABLE},
+		TASK_CONTENT=#{TASK_CONTENT}
+		where PTID = #{PTID}
+	</update>
+	
+	<!-- 任务完成提交 -->
+	<update id="submitTask" parameterType="pd">
+		update <include refid="tableName"></include> with(ROWLOCK)
+		set TASK_STATE='已完成',
+		REAL_COMPLETE_TIME = getdate()
+		where PTID	=#{PTID}
+	</update>
+	
+	<!-- 关闭任务 -->
+	<update id="closeTask" parameterType="pd">
+		update <include refid="tableName"></include> with(ROWLOCK)
+		set TASK_STATE='已关闭',
+		TASK_CLOSE_TIME = getdate()
+		where PTID	in
+		<foreach item="item" index="index" collection="PTIDS" open="(" separator="," close=")">
+                 #{item}
+		</foreach>		
+	</update>
+	<!-- 任务退回重做 -->
+	<update id="redoTask" parameterType="pd">
+		update <include refid="tableName"></include> with(ROWLOCK)
+		set TASK_STATE='退回重做',
+		REAL_COMPLETE_TIME=null
+		where PTID	in
+		<foreach item="item" index="index" collection="PTIDS" open="(" separator="," close=")">
+                 #{item}
+		</foreach>		
+	</update>
+	<!-- 关闭所有任务 -->
+	<update id="closeAllTask" parameterType="pd">
+		update <include refid="tableName"></include> with(ROWLOCK)
+		set TASK_STATE='已关闭',
+		TASK_CLOSE_TIME = getdate()
+		where  TASK_STATE='已完成' and TASK_CREATE_PERSON=#{TASK_CREATE_PERSON} 
+	</update>	
+	<!-- 删除任务信息 -->
+	<delete id="deleteTask" parameterType="pd">
+		delete from  <include refid="tableName"></include>
+		where PTID	=#{PTID}
+	</delete>
+	
+	<!-- 查找任务 -->
+	<select id="findTaskByID" parameterType="pd" resultType="pd">
+		select * from  <include refid="tableName"></include>  with(nolock)
+		where PTID	=#{PTID}
+	</select>
+</mapper>

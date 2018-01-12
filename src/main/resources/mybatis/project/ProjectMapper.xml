@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectMapper">
+	
+	<!-- 项目基础信息表 -->
+	<sql id="tableName">WH_PROJECT</sql>
+	
+	<select id="findProjectByNameAndType" parameterType="pd" resultType="pd">
+		select * from 
+		<include refid="tableName"></include>
+		where WH_PROJECT_NAME=#{WH_PROJECT_NAME} and PROJECT_TYPE=#{PROJECT_TYPE}
+	</select>
+	
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select top 5000 * from 
+		<include refid="tableName"></include>
+	</select>
+	<!-- 新增 -->
+	<insert id="addProject" parameterType="pd" keyProperty="PID" useGeneratedKeys="true">
+		insert into 
+		<include refid="tableName"></include>
+		(WH_PROJECT_NAME,SALE_SOURCE,PROJECT_LEADER,PROJECT_TYPE,UPTIME,DELIVERY_CYLE,WH_MEMO) 
+		values(#{WH_PROJECT_NAME},#{SALE_SOURCE},#{PROJECT_LEADER},#{PROJECT_TYPE},#{UPTIME},#{DELIVERY_CYLE},#{WH_MEMO})
+	</insert>
+	<!-- 更新数据 -->
+	<update id="updateProject" parameterType="pd">
+		update <include refid="tableName"></include> 
+		set SALE_SOURCE= #{SALE_SOURCE},
+		PROJECT_LEADER= #{PROJECT_LEADER},
+		WH_PROJECT_NAME= #{WH_PROJECT_NAME},
+		PROJECT_TYPE= #{PROJECT_TYPE},
+		UPTIME= #{UPTIME},
+		DELIVERY_CYLE=#{DELIVERY_CYLE},
+		WH_MEMO=#{WH_MEMO}
+		where PID = #{PID}
+	</update>
+	<!-- 删除行 -->
+	<delete id="deleteProject" parameterType="pd">
+		delete from <include refid="tableName"></include> where PID=#{PID} 
+	</delete>
+	
+</mapper>

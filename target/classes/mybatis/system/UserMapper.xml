@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+	<sql id="tableName">EMPLOYEE</sql>
+	<select id="findUserByUserName" parameterType="pd" resultType="pd">
+		select * from 
+		<include refid="tableName"></include>  with(nolock)
+		where e_userName=#{e_userName}
+	</select>
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select * from 
+		<include refid="tableName"></include>  with(nolock)
+	</select>
+	<!-- 新增 -->
+	<insert id="save" parameterType="pd" keyProperty="EID" useGeneratedKeys="true">
+		insert into 
+		<include refid="tableName"></include>
+		(e_userName,depName,Job,password,state,e_name) 
+		values(#{e_userName},#{depName},#{Job},'111111',#{state},#{e_name})
+	</insert>
+	<!-- 更新数据 -->
+	<update id="update" parameterType="pd">
+		update <include refid="tableName"></include> 
+		set depName= #{depName},
+		Job= #{Job},
+		state= #{state},
+		e_name= #{e_name}
+		where EID = #{EID}
+	</update>
+	<!-- 删除行 -->
+	<delete id="delete">
+		delete from <include refid="tableName"></include> where EID=#{EID} 
+	</delete>
+	<!-- 重置密码 -->
+	<update id="resetpwd" parameterType="pd">
+		update <include refid="tableName"></include> 
+		set password= '111111' where EID = #{EID}
+	</update>
+	<!-- 修改密码 -->
+	<update id="changePwd" parameterType="pd">
+		update <include refid="tableName"></include> 
+		set password= #{new_pwd} where EID = #{EID}
+	</update>
+</mapper>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="/calmApp/resources/fileUpLoad/css/jquery.plupload.queue.css" type="text/css"  rel="stylesheet" >
+    <link href="/calmApp/resources/bootstrap/css/bootstrap.css" type="text/css"  rel="stylesheet" >
+    <script src="/calmApp/resources/js/common/jquery-1.8.3/jquery.min.js" type="text/javascript"></script>   
+    <script type="text/javascript" src="/calmApp/resources/fileUpLoad/js/plupload.full.min.js"></script>
+    <!-- 可以不要,这个和方法二相关联，和方法一无关，去掉之后依然支持多文件上传 -->
+    <script type="text/javascript" src="/calmApp/resources/fileUpLoad/js/jquery.plupload.queue.min.js"></script>    
+     <script type="text/javascript" src="/calmApp/resources/fileUpLoad/js/zh_CN.js"></script>
+    </head>
+
+	<body>
+	
+===========================方法一	
+	<div id="filelist">Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+<br />
+ 
+<div id="container">
+    <a id="pickfiles" href="javascript:;">[Select files]</a>
+    <a id="uploadfiles" href="javascript:;">[Upload files]</a>
+</div>
+ 
+<br />
+<pre id="console"></pre>
+ ===============================方法二
+ <div id="uploader">
+    <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+</div>
+ 
+<script type="text/javascript">
+// Custom example logic
+ 
+var uploader = new plupload.Uploader({
+    runtimes : 'html5,flash,silverlight,html4',
+     
+    browse_button : 'pickfiles', // you can pass in id...
+    container: document.getElementById('container'), // ... or DOM Element itself
+    //文件上传时每一块的大小
+    chunk_size : '1mb',
+    //文件名是否能重复
+  //  unique_names : true,
+    url : "/calmApp/uploader",
+     
+    filters : {
+        max_file_size : '10mb',
+        mime_types: [
+            {title : "Image files", extensions : "*"},
+            {title : "Zip files", extensions : "*"}
+        ]
+    },
+    // 图片压缩
+  //  resize : {width : 320, height : 240, quality : 90},
+    // Flash settings
+    flash_swf_url : '/calmApp/resources/fileUpLoad/js/Moxie.swf',
+ 
+    // Silverlight settings
+    silverlight_xap_url : '/calmApp/resources/fileUpLoad/js/Moxie.xap',
+	
+    init: {
+        PostInit: function() {
+            document.getElementById('filelist').innerHTML = '';
+ 
+            document.getElementById('uploadfiles').onclick = function() {
+            	//开始上传文件
+                uploader.start();
+                return false;
+            };
+        },
+ 
+      //文件添加时，会在容器里显示待上传的文件列表
+        FilesAdded: function(up, files) {
+            plupload.each(files, function(file) {
+                document.getElementById('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
+            });
+        },
+ 
+      //文件上传的进度
+        UploadProgress: function(up, file) {
+            document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+        },
+ 
+        Error: function(up, err) {
+            document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
+        },
+        FileUploaded:function(up, file)
+        {
+        	alert(file.name);
+        },
+      //文件上传成功后的总计
+       UploadComplete:function(up, files) {
+        		    $('#filelist').innerHTML = "您选择的文件已经全部上传，总计共" + files.length + "个文件";
+        		}
+    }
+});
+ 
+uploader.init();
+//
+$(function() {
+    // Setup html5 version
+    $("#uploader").pluploadQueue({
+        // General settings
+        runtimes : 'html5,flash,silverlight,html4',
+        url : "/calmApp/uploader",
+         
+        chunk_size : '1mb',
+        rename : true,
+        dragdrop: true,
+         
+        filters : {
+            // Maximum file size
+            max_file_size : '10mb',
+            // Specify what files to browse for
+            mime_types: [
+                {title : "Image files", extensions : "*"},
+                {title : "Zip files", extensions : "*"}
+            ]
+        },
+ 
+        // Resize images on clientside if we can
+        resize: {
+            width : 200,
+            height : 200,
+            quality : 90,
+            crop: true // crop to exact dimensions
+        },
+ 
+ 
+        // Flash settings
+        flash_swf_url : '/calmApp/resources/fileUpLoad/js/Moxie.swf',
+     
+        // Silverlight settings
+        silverlight_xap_url : '/calmApp/resources/fileUpLoad/js/Moxie.xap'
+    });
+});
+</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</body>
+
+
+</html>
