@@ -62,6 +62,7 @@ public class TaskController extends BaseController{
 				pd.put("TASK_CREATE_PERSON", user.get("e_name"));
 				if(taskService.addTask(pd)){	
 					//如果人员钉钉账号ID设置，发送消息
+					//查询责任人ID
 					if(StringUtils.isNotBlank(user.getString("dingdingID")))
 					{
 						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
