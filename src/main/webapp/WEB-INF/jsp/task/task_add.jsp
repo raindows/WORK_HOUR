@@ -144,7 +144,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    				data-options="required:true,
 	    					validType:['length[0,50]'], 
 				            panelWidth:380,
-				            idField:'e_name',    
+				            idField:'e_userName', 
+				            onChange:PERSON_LIABLE_CHANGE,   
 				            textField:'e_name',    
 				            url:'system/listAll',    
 				            columns:[[    
@@ -157,6 +158,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				            ]]    
 				        ">
 	    				</select>
+	    				<input name="e_userName" type="hidden">
 	    			</td>
 	    		
 	    			<td>优先级:</td>
@@ -311,6 +313,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 	});
 
+	//责任人选择事件
+	function PERSON_LIABLE_CHANGE(newValue, oldValue){
+		$("input[name=e_userName]").val(newValue);
+	}
 	//表单提交
 	function submitForm(){
         $('form').form('submit',{

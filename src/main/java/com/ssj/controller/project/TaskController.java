@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.dingtalk.openapi.demo.SendMessage;
 import com.ssj.controller.base.BaseController;
+import com.ssj.service.system.UserManger;
 import com.ssj.service.task.TaskManager;
 import com.ssj.util.JsonDateValueProcessor;
 import com.ssj.util.PageData;
@@ -32,6 +33,10 @@ public class TaskController extends BaseController{
 
 	@Resource(name="taskService")
 	TaskManager taskService;
+	
+	@Resource(name="userService")
+	private UserManger userService;
+	
 	//进入下达任务页面
 	@RequestMapping("/task/to_task_add")
 	public ModelAndView toTaskAdd(){
@@ -61,14 +66,19 @@ public class TaskController extends BaseController{
 				PageData user = (PageData) subject.getSession().getAttribute("user");
 				pd.put("TASK_CREATE_PERSON", user.get("e_name"));
 				if(taskService.addTask(pd)){	
-					//如果人员钉钉账号ID设置，发送消息
-					//查询责任人ID
-					if(StringUtils.isNotBlank(user.getString("dingdingID")))
-					{
-						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-						String content =formatter.format(new java.util.Date())+user.get("e_name")+"给你下达了【"+pd.getString("PROJECT_NAME")+"】一个"+pd.getString("TASK_TYPE")+"任务,要求工时【"
-								+pd.getString("ESTIMATED_WORK_HOUR")+"天】,完成时间【"+pd.get("NEED_COMPLETE_TIME")+"】";
-						new SendMessage().sendMessage(user.getString("dingdingID"),content);	
+					
+					//查询责任人信息
+					if(StringUtils.isNotBlank(pd.getString("e_userName"))){
+						PageData user_tmep = userService.findUserByUserName(pd);
+						//如果人员钉钉账号ID设置，发送消息
+						if(user_tmep != null && StringUtils.isNotBlank(user_tmep.getString("dingdingID")))
+						{
+							SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+							String content =formatter.format(new java.util.Date())+user.get("e_name")+"给你下达了【"+pd.getString("PROJECT_NAME")+"】一个"+pd.getString("TASK_TYPE")+"任务,要求工时【"
+									+pd.getString("ESTIMATED_WORK_HOUR")+"天】,完成时间【"+pd.get("NEED_COMPLETE_TIME")+"】";
+							new SendMessage().sendMessage(user_tmep.getString("dingdingID"),content);	
+						
+						}						
 					}
 					map.put("target", "success");
 					map.put("msg",pd);
