@@ -24,5 +24,13 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/sendDingdingMessage.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/client-sdk.api-1.0.2.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/client-sdk.common-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/client-sdk.core-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/client-sdk.example-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/client-sdk.spring-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/lippi-oapi-encrpt.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/taobao-sdk-java-auto_1479188381469-20170724.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
