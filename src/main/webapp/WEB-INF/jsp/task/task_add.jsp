@@ -127,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    				 <select class="easyui-combobox"  style="width: 100%"  type="text" 
 	    					name="TASK_TYPE"
 	    					data-options="required:true,validType:['length[0,100]']">
-	    					<option>开发任务</option>
+	    					<option>开发</option>
 	    					<option>Bug</option>
 	    					<option>售前技术支持</option>
 	    					<option>售后服务</option>

@@ -49,6 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<th field="e_name" align="center" width="1" >姓名</th>
 			<th field=depName  align="center" width="1">部门</th>
 			<th field="Job"  align="center" width="1">职位</th>
+			<th field="dingdingID" align="center" width="1">钉钉ID号</th>
 			<th field="state" align="center" width="1" >状态</th>
 		</tr>
 	</thead>
@@ -78,6 +79,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    			<td>
 	    				<input class="easyui-textbox"  style="width: 100%"  type="text" 
 	    				name="e_name" data-options="required:true,validType:['length[0,50]']"></input>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td>钉钉ID号:</td>
+	    			<td>
+	    				<input class="easyui-textbox"  style="width: 100%"  type="text" 
+	    				name="dingdingID" data-options="required:false,validType:['length[0,50]']"></input>
 	    			</td>
 	    		</tr>
 	    		<tr>

@@ -15,8 +15,8 @@
 	<insert id="save" parameterType="pd" keyProperty="EID" useGeneratedKeys="true">
 		insert into 
 		<include refid="tableName"></include>
-		(e_userName,depName,Job,password,state,e_name) 
-		values(#{e_userName},#{depName},#{Job},'111111',#{state},#{e_name})
+		(e_userName,depName,Job,password,state,e_name,dingdingID) 
+		values(#{e_userName},#{depName},#{Job},'111111',#{state},#{e_name},#{dingdingID})
 	</insert>
 	<!-- 更新数据 -->
 	<update id="update" parameterType="pd">
@@ -24,7 +24,8 @@
 		set depName= #{depName},
 		Job= #{Job},
 		state= #{state},
-		e_name= #{e_name}
+		e_name= #{e_name},
+		dingdingID=#{dingdingID}
 		where EID = #{EID}
 	</update>
 	<!-- 删除行 -->

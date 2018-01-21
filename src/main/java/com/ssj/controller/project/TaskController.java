@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.dingtalk.openapi.demo.SendMessage;
 import com.ssj.controller.base.BaseController;
 import com.ssj.service.task.TaskManager;
 import com.ssj.util.JsonDateValueProcessor;
@@ -59,7 +60,15 @@ public class TaskController extends BaseController{
 				Subject subject = SecurityUtils.getSubject();
 				PageData user = (PageData) subject.getSession().getAttribute("user");
 				pd.put("TASK_CREATE_PERSON", user.get("e_name"));
-				if(taskService.addTask(pd)){						
+				if(taskService.addTask(pd)){	
+					//如果人员钉钉账号ID设置，发送消息
+					if(StringUtils.isNotBlank(user.getString("dingdingID")))
+					{
+						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+						String content =formatter.format(new java.util.Date())+user.get("e_name")+"给你下达了【"+pd.getString("PROJECT_NAME")+"】一个"+pd.getString("TASK_TYPE")+"任务,要求工时【"
+								+pd.getString("ESTIMATED_WORK_HOUR")+"天】,完成时间【"+pd.get("NEED_COMPLETE_TIME")+"】";
+						new SendMessage().sendMessage(user.getString("dingdingID"),content);	
+					}
 					map.put("target", "success");
 					map.put("msg",pd);
 				}else{
@@ -81,9 +90,10 @@ public class TaskController extends BaseController{
 	@RequestMapping("/task/loadMyCreateTask")
 	@ResponseBody
 	public String loadMyCreateTask(){
+
 		PageData pd = this.getPageData();		
 		Map<String, Object> map = new HashMap<String, Object>();
-		try{
+		try{			
 			Subject subject = SecurityUtils.getSubject();
 			PageData user = (PageData) subject.getSession().getAttribute("user");
 			pd.put("TASK_CREATE_PERSON", user.get("e_name"));
@@ -430,5 +440,10 @@ public class TaskController extends BaseController{
         mv.addObject("START_TIME", firstday);
         mv.addObject("END_TIME", lastday);
 		return mv;
+	}
+	public static void main(String args[]) throws Exception{
+		
+	
+	
 	}
 }
