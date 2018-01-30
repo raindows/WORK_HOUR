@@ -272,39 +272,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				return;
 			}
-			$.messager.progress({title:"",msg:"正在处理,请稍后",text:"",interval:500});
-			//提交服务器删除
-			$.ajax({
-				type: "POST",
-				url: "task/task_delete",
-				dataType:'json',
-				data:row,
-				cache: false,
-				success: function(data){
-					$.messager.progress('close');
-					if(data.target =="success"){
-						var rowIndex = $("#dg").datagrid("getRowIndex",row);	
-						$("#dg").datagrid("deleteRow",rowIndex);	
-						$.messager.show({
-							"title":'',
-							"msg":'删除成功',
-							"showType":'show',
-							"timeout":2,
-							"style":{
-								"right":'',
-								"top":document.body.scrollTop+document.documentElement.scrollTop,
-								"bottom":''
-								}
-							});
-					}else{
-						$.messager.alert('',data.msg,'error');
-					}
-				},
-				error : function(XmlHttpRequest,textStatus,errorThrown){
-					$.messager.progress('close');
-					$.messager.alert('','服务访问异常：'+errorThrown,'error');
-				}
-			});
+			
+			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+			    if (r){    
+			        //begin delete
+			        $.messager.progress({title:"",msg:"正在处理,请稍后",text:"",interval:500});
+					//提交服务器删除
+					$.ajax({
+						type: "POST",
+						url: "task/task_delete",
+						dataType:'json',
+						data:row,
+						cache: false,
+						success: function(data){
+							$.messager.progress('close');
+							if(data.target =="success"){
+								var rowIndex = $("#dg").datagrid("getRowIndex",row);	
+								$("#dg").datagrid("deleteRow",rowIndex);	
+								$.messager.show({
+									"title":'',
+									"msg":'删除成功',
+									"showType":'show',
+									"timeout":2,
+									"style":{
+										"right":'',
+										"top":document.body.scrollTop+document.documentElement.scrollTop,
+										"bottom":''
+										}
+									});
+							}else{
+								$.messager.alert('',data.msg,'error');
+							}
+						},
+						error : function(XmlHttpRequest,textStatus,errorThrown){
+							$.messager.progress('close');
+							$.messager.alert('','服务访问异常：'+errorThrown,'error');
+						}
+					});
+			        //end delete
+			    }    
+			}); 
+			
 		});
 		//刷新
 		$("#reloadBtn").on("click",function(){

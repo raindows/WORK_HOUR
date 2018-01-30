@@ -54,6 +54,11 @@ public class TaskController extends BaseController{
 		try{
 			if(StringUtils.isNotBlank(pd.getString("PTID")))//update
 			{
+				Subject subject = SecurityUtils.getSubject();
+				PageData user = (PageData) subject.getSession().getAttribute("user");
+				PageData user_tmep = userService.findUserByUserName(pd);
+				pd.put("TASK_CREATE_PERSON", user.get("e_name"));
+				pd.put("PERSON_LIABLE", user_tmep.getString("e_name"));
 				if(taskService.updateTask(pd)){
 					map.put("target", "success");
 					map.put("msg",pd);
@@ -64,12 +69,13 @@ public class TaskController extends BaseController{
 			}else{
 				Subject subject = SecurityUtils.getSubject();
 				PageData user = (PageData) subject.getSession().getAttribute("user");
+				PageData user_tmep = userService.findUserByUserName(pd);
 				pd.put("TASK_CREATE_PERSON", user.get("e_name"));
+				pd.put("PERSON_LIABLE", user_tmep.getString("e_name"));
 				if(taskService.addTask(pd)){	
 					
 					//查询责任人信息
-					if(StringUtils.isNotBlank(pd.getString("e_userName"))){
-						PageData user_tmep = userService.findUserByUserName(pd);
+					//if(StringUtils.isNotBlank(pd.getString("e_userName"))){						
 						//如果人员钉钉账号ID设置，发送消息
 						if(user_tmep != null && StringUtils.isNotBlank(user_tmep.getString("dingdingID")))
 						{
@@ -79,8 +85,10 @@ public class TaskController extends BaseController{
 							new SendMessage().sendMessage(user_tmep.getString("dingdingID"),content);	
 						
 						}						
-					}
+					//}
 					map.put("target", "success");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+					pd.put("TASK_CREATE_TIME",sdf.format(new java.util.Date()));
 					map.put("msg",pd);
 				}else{
 					map.put("target", "error");
@@ -96,6 +104,30 @@ public class TaskController extends BaseController{
 		jConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor("yyyy-MM-dd"));
 		return JSONObject.fromObject(map,jConfig).toString();
 	}
+	
+		//删除我下达的任务
+		@RequestMapping("/task/task_delete")
+		@ResponseBody
+		public String task_delete(){
+			PageData pd = this.getPageData();
+			Map<String, Object> map = new HashMap<String, Object>();
+			try {
+				if("已下达".equals(pd.getString("TASK_STATE")))
+				{
+					taskService.deleteTask(pd);		
+					map.put("target", "success");
+					map.put("msg","删除成功");
+				}else{
+					map.put("target", "error");
+					map.put("msg",pd.getString("TASK_STATE")+"任务不能删除！！！");
+				}
+				
+			} catch (Exception e) {
+				map.put("target", "error");
+				map.put("msg","异常："+e.getMessage());
+			}		
+			return JSONObject.fromObject(map).toString();
+		}
 	
 	//加载我下达的任务
 	@RequestMapping("/task/loadMyCreateTask")
@@ -451,10 +483,5 @@ public class TaskController extends BaseController{
         mv.addObject("START_TIME", firstday);
         mv.addObject("END_TIME", lastday);
 		return mv;
-	}
-	public static void main(String args[]) throws Exception{
-		
-	
-	
 	}
 }
